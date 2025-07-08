@@ -13,9 +13,10 @@ const Map = dynamic(() => import("@/components/leaflet-map"), {
 interface MapViewProps {
   reports: UserFloodReport[];
   waterGates: WaterGate[];
+  active: boolean;
 }
 
-export default function MapView({ reports, waterGates }: MapViewProps) {
+export default function MapView({ reports, waterGates, active }: MapViewProps) {
   return (
     <Card>
       <CardHeader>
@@ -25,7 +26,7 @@ export default function MapView({ reports, waterGates }: MapViewProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Map reports={reports} waterGates={waterGates} />
+        <Map reports={reports} waterGates={waterGates} active={active} />
       </CardContent>
     </Card>
   );

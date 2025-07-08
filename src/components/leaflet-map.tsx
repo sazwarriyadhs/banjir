@@ -9,10 +9,12 @@ import { MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup } fro
 import type { UserFloodReport, WaterGate, WaterGateStatus } from "@/lib/types";
 import Image from "next/image";
 import { format } from "date-fns";
+import { useState, useEffect } from "react";
 
 interface LeafletMapProps {
   reports: UserFloodReport[];
   waterGates: WaterGate[];
+  active: boolean;
 }
 
 const userReportIcon = new L.Icon({
@@ -63,8 +65,18 @@ const getWaterGateIcon = (status: WaterGateStatus) => {
     return waterGateIcons[status] || waterGateIcons['Normal'];
 }
 
-const LeafletMap = ({ reports, waterGates }: LeafletMapProps) => {
+const LeafletMap = ({ reports, waterGates, active }: LeafletMapProps) => {
   const position: [number, number] = [-6.3, 106.85];
+  const [map, setMap] = useState<L.Map | null>(null);
+
+  useEffect(() => {
+    if (map && active) {
+      const timer = setTimeout(() => {
+        map.invalidateSize();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [map, active]);
 
   return (
     <MapContainer
@@ -72,6 +84,7 @@ const LeafletMap = ({ reports, waterGates }: LeafletMapProps) => {
       zoom={10}
       scrollWheelZoom={true}
       className="h-[500px] w-full rounded-lg overflow-hidden border"
+      ref={setMap}
     >
       <LayersControl position="topright">
         <LayersControl.BaseLayer checked name="Street Map">

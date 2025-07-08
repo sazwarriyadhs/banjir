@@ -89,6 +89,7 @@ const initialWaterGates: WaterGate[] = [
 export default function Home() {
   const [reports, setReports] = useState<UserFloodReport[]>(initialReports);
   const [waterGates, setWaterGates] = useState<WaterGate[]>(initialWaterGates);
+  const [activeTab, setActiveTab] = useState("dashboard");
 
   const addReport = (report: Omit<UserFloodReport, "id" | "time">) => {
     const newReport: UserFloodReport = {
@@ -113,7 +114,7 @@ export default function Home() {
       </header>
 
       <main className="container mx-auto p-4">
-        <Tabs defaultValue="dashboard" className="w-full">
+        <Tabs defaultValue="dashboard" className="w-full" onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-3 md:w-[600px] mx-auto">
             <TabsTrigger value="dashboard">
               <Gauge className="mr-2 h-4 w-4" />
@@ -134,7 +135,7 @@ export default function Home() {
                 <Dashboard reports={reports} />
               </TabsContent>
               <TabsContent value="map" forceMount>
-                <MapView reports={reports} waterGates={waterGates} />
+                <MapView reports={reports} waterGates={waterGates} active={activeTab === 'map'} />
               </TabsContent>
               <TabsContent value="report" forceMount>
                 <ReportForm addReport={addReport} />
