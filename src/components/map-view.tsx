@@ -3,14 +3,15 @@
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import type { UserFloodReport } from "@/lib/types";
+import type { UserFloodReport, WaterGate } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface MapViewProps {
   reports: UserFloodReport[];
+  waterGates: WaterGate[];
 }
 
-export default function MapView({ reports }: MapViewProps) {
+export default function MapView({ reports, waterGates }: MapViewProps) {
   const Map = useMemo(
     () =>
       dynamic(() => import("@/components/leaflet-map"), {
@@ -25,11 +26,11 @@ export default function MapView({ reports }: MapViewProps) {
       <CardHeader>
         <CardTitle>Flood Report Map</CardTitle>
         <CardDescription>
-          Visualize user-submitted flood reports. Click on a pin for details.
+          Visualize user reports and water gate levels. Use layers to toggle views.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Map reports={reports} />
+        <Map reports={reports} waterGates={waterGates} />
       </CardContent>
     </Card>
   );

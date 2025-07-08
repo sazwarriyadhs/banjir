@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Dashboard from "@/components/dashboard";
 import MapView from "@/components/map-view";
 import ReportForm from "@/components/report-form";
-import type { UserFloodReport } from "@/lib/types";
+import type { UserFloodReport, WaterGate } from "@/lib/types";
 
 const initialReports: UserFloodReport[] = [
   {
@@ -38,8 +38,58 @@ const initialReports: UserFloodReport[] = [
   },
 ];
 
+const initialWaterGates: WaterGate[] = [
+  {
+    id: 'wg-1',
+    name: 'Pintu Air Katulampa',
+    latitude: -6.6343,
+    longitude: 106.8492,
+    status: 'Normal',
+    level: 40,
+    lastUpdate: '2024-08-15T09:00:00.000Z',
+  },
+  {
+    id: 'wg-2',
+    name: 'Pintu Air Depok',
+    latitude: -6.4025,
+    longitude: 106.8222,
+    status: 'Waspada',
+    level: 180,
+    lastUpdate: '2024-08-15T09:10:00.000Z',
+  },
+  {
+    id: 'wg-3',
+    name: 'Pintu Air Manggarai',
+    latitude: -6.2088,
+    longitude: 106.849,
+    status: 'Siaga',
+    level: 860,
+    lastUpdate: '2024-08-15T09:20:00.000Z',
+  },
+  {
+    id: 'wg-4',
+    name: 'Pintu Air Karet',
+    latitude: -6.207,
+    longitude: 106.8183,
+    status: 'Normal',
+    level: 420,
+    lastUpdate: '2024-08-15T09:25:00.000Z',
+  },
+   {
+    id: 'wg-5',
+    name: 'Pintu Air Angke Hulu',
+    latitude: -6.155,
+    longitude: 106.78,
+    status: 'Awas',
+    level: 260,
+    lastUpdate: '2024-08-15T09:15:00.000Z',
+  },
+];
+
+
 export default function Home() {
   const [reports, setReports] = useState<UserFloodReport[]>(initialReports);
+  const [waterGates, setWaterGates] = useState<WaterGate[]>(initialWaterGates);
 
   const addReport = (report: Omit<UserFloodReport, "id" | "time">) => {
     const newReport: UserFloodReport = {
@@ -86,7 +136,7 @@ export default function Home() {
                 <Dashboard reports={reports} />
               </TabsContent>
               <TabsContent value="map">
-                <MapView reports={reports} />
+                <MapView reports={reports} waterGates={waterGates} />
               </TabsContent>
               <TabsContent value="report">
                 <ReportForm addReport={addReport} />

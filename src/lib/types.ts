@@ -14,3 +14,15 @@ export type UserFloodReport = {
   latitude: number;
   longitude: number;
 };
+
+export type WaterGateStatus = 'Normal' | 'Waspada' | 'Siaga' | 'Awas';
+
+export type WaterGate = {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  status: WaterGateStatus;
+  level: number; // in cm
+  lastUpdate: string; // ISO string
+};
