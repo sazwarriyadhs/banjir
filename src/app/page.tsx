@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Droplets, Gauge, Map, MessageSquareQuote, PlusCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
 import Dashboard from "@/components/dashboard";
 import MapView from "@/components/map-view";
 import ReportForm from "@/components/report-form";
@@ -130,8 +129,7 @@ export default function Home() {
             </TabsTrigger>
           </TabsList>
           
-          <Card className="mt-4 border-none shadow-none bg-transparent">
-            <CardContent className="p-0 sm:p-2 md:p-4">
+          <div className="mt-4 p-0 sm:p-2 md:p-4">
               <TabsContent value="dashboard" forceMount>
                 <Dashboard reports={reports} />
               </TabsContent>
@@ -141,8 +139,7 @@ export default function Home() {
               <TabsContent value="report" forceMount>
                 <ReportForm addReport={addReport} />
               </TabsContent>
-            </CardContent>
-          </Card>
+          </div>
         </Tabs>
       </main>
 
