@@ -132,13 +132,13 @@ export default function Home() {
           
           <Card className="mt-4 border-none shadow-none bg-transparent">
             <CardContent className="p-0 sm:p-2 md:p-4">
-              <TabsContent value="dashboard">
+              <TabsContent value="dashboard" forceMount>
                 <Dashboard reports={reports} />
               </TabsContent>
-              <TabsContent value="map">
+              <TabsContent value="map" forceMount>
                 <MapView reports={reports} waterGates={waterGates} />
               </TabsContent>
-              <TabsContent value="report">
+              <TabsContent value="report" forceMount>
                 <ReportForm addReport={addReport} />
               </TabsContent>
             </CardContent>
