@@ -130,17 +130,15 @@ export default function Home() {
             </TabsTrigger>
           </TabsList>
           
-          <div className="mt-4 p-0 sm:p-2 md:p-4">
-              <TabsContent value="dashboard" forceMount>
-                <Dashboard reports={reports} />
-              </TabsContent>
-              <TabsContent value="map" forceMount>
-                <MapView reports={reports} waterGates={waterGates} active={activeTab === 'map'} />
-              </TabsContent>
-              <TabsContent value="report" forceMount>
-                <ReportForm addReport={addReport} />
-              </TabsContent>
-          </div>
+          <TabsContent value="dashboard" forceMount className="mt-4 p-0 sm:p-2 md:p-4">
+            <Dashboard reports={reports} />
+          </TabsContent>
+          <TabsContent value="map" forceMount className="mt-4 p-0 sm:p-2 md:p-4">
+            <MapView reports={reports} waterGates={waterGates} active={activeTab === 'map'} />
+          </TabsContent>
+          <TabsContent value="report" forceMount className="mt-4 p-0 sm:p-2 md:p-4">
+            <ReportForm addReport={addReport} />
+          </TabsContent>
         </Tabs>
       </main>
 
