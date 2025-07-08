@@ -5,11 +5,25 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 
 import L from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup, useMap } from "react-leaflet";
 import type { UserFloodReport, WaterGate, WaterGateStatus } from "@/lib/types";
 import Image from "next/image";
 import { format } from "date-fns";
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
+
+// This component uses the useMap hook to get the map instance and resizes it when the tab becomes active.
+function MapResizer({ active }: { active: boolean }) {
+  const map = useMap();
+  useEffect(() => {
+    if (active) {
+      const timer = setTimeout(() => {
+        map.invalidateSize();
+      }, 100); // A small delay ensures the container is visible and has its final size.
+      return () => clearTimeout(timer);
+    }
+  }, [active, map]);
+  return null;
+}
 
 interface LeafletMapProps {
   reports: UserFloodReport[];
@@ -67,18 +81,6 @@ const getWaterGateIcon = (status: WaterGateStatus) => {
 
 const LeafletMap = ({ reports, waterGates, active }: LeafletMapProps) => {
   const position: [number, number] = [-6.3, 106.85];
-  const mapRef = useRef<L.Map | null>(null);
-
-  useEffect(() => {
-    // When the map tab becomes active, invalidate the map size
-    // to ensure it renders correctly after being hidden.
-    if (active && mapRef.current) {
-      const timer = setTimeout(() => {
-        mapRef.current?.invalidateSize();
-      }, 100); // A small delay ensures the container is visible and has its final size.
-      return () => clearTimeout(timer);
-    }
-  }, [active]);
 
   return (
     <MapContainer
@@ -86,8 +88,8 @@ const LeafletMap = ({ reports, waterGates, active }: LeafletMapProps) => {
       zoom={10}
       scrollWheelZoom={true}
       className="h-[500px] w-full rounded-lg overflow-hidden border"
-      ref={mapRef}
     >
+      <MapResizer active={active} />
       <LayersControl position="topright">
         <LayersControl.BaseLayer checked name="Street Map">
           <TileLayer
