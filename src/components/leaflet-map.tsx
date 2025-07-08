@@ -9,7 +9,7 @@ import { MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup } fro
 import type { UserFloodReport, WaterGate, WaterGateStatus } from "@/lib/types";
 import Image from "next/image";
 import { format } from "date-fns";
-import { useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 interface LeafletMapProps {
   reports: UserFloodReport[];
@@ -67,16 +67,18 @@ const getWaterGateIcon = (status: WaterGateStatus) => {
 
 const LeafletMap = ({ reports, waterGates, active }: LeafletMapProps) => {
   const position: [number, number] = [-6.3, 106.85];
-  const [map, setMap] = useState<L.Map | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
 
   useEffect(() => {
-    if (map && active) {
+    // When the map tab becomes active, invalidate the map size
+    // to ensure it renders correctly after being hidden.
+    if (active && mapRef.current) {
       const timer = setTimeout(() => {
-        map.invalidateSize();
-      }, 100);
+        mapRef.current?.invalidateSize();
+      }, 100); // A small delay ensures the container is visible and has its final size.
       return () => clearTimeout(timer);
     }
-  }, [map, active]);
+  }, [active]);
 
   return (
     <MapContainer
@@ -84,7 +86,7 @@ const LeafletMap = ({ reports, waterGates, active }: LeafletMapProps) => {
       zoom={10}
       scrollWheelZoom={true}
       className="h-[500px] w-full rounded-lg overflow-hidden border"
-      ref={setMap}
+      ref={mapRef}
     >
       <LayersControl position="topright">
         <LayersControl.BaseLayer checked name="Street Map">
