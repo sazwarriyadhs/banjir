@@ -1,10 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { UserFloodReport, WaterGate } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
+
+const Map = dynamic(() => import("@/components/leaflet-map"), {
+  loading: () => <Skeleton className="h-[500px] w-full rounded-lg" />,
+  ssr: false,
+});
 
 interface MapViewProps {
   reports: UserFloodReport[];
@@ -12,15 +16,6 @@ interface MapViewProps {
 }
 
 export default function MapView({ reports, waterGates }: MapViewProps) {
-  const Map = useMemo(
-    () =>
-      dynamic(() => import("@/components/leaflet-map"), {
-        loading: () => <Skeleton className="h-[500px] w-full rounded-lg" />,
-        ssr: false,
-      }),
-    []
-  );
-
   return (
     <Card>
       <CardHeader>
